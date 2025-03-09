@@ -4,6 +4,7 @@ Shader "Custom/AlbedoTextureShader"
     Properties
     {
         _MainTex ("Albedo Texture", 2D) = "white" {}
+        _ambientMultiplier("Ambient Multiplier", Range(0, 1)) = 0.5
     }
     
     SubShader
@@ -33,6 +34,9 @@ Shader "Custom/AlbedoTextureShader"
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
 
+            // Ambient multiplier
+            float _ambientMultiplier;
+
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
@@ -43,7 +47,8 @@ Shader "Custom/AlbedoTextureShader"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+                half4 albedo = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+                return albedo * _ambientMultiplier;
             }
 
             ENDHLSL

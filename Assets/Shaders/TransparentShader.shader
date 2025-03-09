@@ -31,6 +31,7 @@ Shader "Custom/URP_TransparentShader"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 viewDir : TEXCOORD1;
                 float2 uv : TEXCOORD0;
             };
 
@@ -42,6 +43,7 @@ Shader "Custom/URP_TransparentShader"
             {
                 Varyings OUT;
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS);
+                OUT.viewDir = normalize(OUT.positionCS.xyz);
                 OUT.uv = IN.uv;
                 return OUT;
             }
@@ -51,6 +53,10 @@ Shader "Custom/URP_TransparentShader"
                 float4 baseMapColor = tex2D(_BaseMap, IN.uv);
                 float4 finalColor = _BaseColor * baseMapColor;
                 finalColor.a *= _Transparency;
+
+                // Multiply output by the view direction cosine with the surface normal
+                finalColor.rgb *= IN.viewDir.z;
+
                 return finalColor;
             }
             ENDHLSL
