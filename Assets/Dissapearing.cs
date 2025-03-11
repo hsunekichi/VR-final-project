@@ -16,7 +16,6 @@ public class Disappearing : MonoBehaviour
     {
         float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
         float transparency = Mathf.Min(1, distance / MaxDistance); // 10 is the maximum distance
-        Debug.Log(transparency);
 
         // Calculate transparency depending on distance
         // You have to select the property name, not the display name

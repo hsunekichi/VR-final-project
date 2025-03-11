@@ -30,13 +30,13 @@ public class treasureController : MonoBehaviour
         if (d < 15.0f)
         {
             // Start rotation in global up axis
-            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-
             float updownFactor = Mathf.Min(1 + (updownSpeedModifier / Mathf.Max(1.0f, d * d)), maxUpdownFactor);
+            transform.Rotate(Vector3.up * rotationSpeed * updownFactor* Time.deltaTime);
+
             float yDistance = transform.position.y - init_pos.y;
 
 
-            // IF animation curve finished
+            // If animation curve finished
             if (Time.time - init_y_t > updownSpeed.keys[updownSpeed.length - 1].time)
             {
                 init_y_t = Time.time;
