@@ -22,14 +22,24 @@ public class FlyCamera : MonoBehaviour
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
 
+    private bool CanRotateCamera = true;
+
     void Update()
     {
         lastMouse = Input.mousePosition - lastMouse;
         lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
+
+        if (CanRotateCamera)
+            transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
         //Mouse  camera angle done.  
+
+        // If alt just pressed, alternate camera rotation
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            CanRotateCamera = !CanRotateCamera;
+        }
 
         //Keyboard commands
         //float f = 0.0f;

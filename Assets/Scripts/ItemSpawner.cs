@@ -15,7 +15,6 @@ public class ItemSpawner : MonoBehaviour
     void Awake()
     {
         SpawnItem();
-        mainCamera = GameObject.Find("Main Camera");
     }
 
     // Update is called once per frame
@@ -42,9 +41,8 @@ public class ItemSpawner : MonoBehaviour
         Gizmos.DrawWireSphere(center, CameraRange);
     }
 
-    GameObject mainCamera;
     float lastSpawnTime;
     bool CanSpawn => CameraInRange && CooldownIsOver;
-    bool CameraInRange => Vector3.Distance(mainCamera.transform.position, center) < CameraRange;
+    bool CameraInRange => Vector3.Distance(Camera.main.transform.position, center) < CameraRange;
     bool CooldownIsOver => Time.time - lastSpawnTime > 1.0f/SpawnRate;
 }
