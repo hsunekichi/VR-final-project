@@ -10,8 +10,7 @@ public class LookingDetection : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void rayAttack()
     {
         // Cast ray from the center of the camera
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
@@ -21,12 +20,19 @@ public class LookingDetection : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             // If the object hit is a cube
-            ObjectSeenFromCamera component = hit.collider.gameObject.GetComponent<ObjectSeenFromCamera>();
-            if (component != null)
-            {
-                // Call the function in the ObjectSeenFromCamera script
-                component.LookedAt();
+            Damageable component = hit.collider.gameObject.GetComponent<Damageable>();
+            if (component != null) {
+                component.Damage();
             }
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Check mouse is pressed
+        if (Input.GetMouseButtonDown(0)) {
+            rayAttack();
         }
     }
 }

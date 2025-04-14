@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Sample
 {
@@ -22,11 +23,22 @@ namespace Sample
         private float Dissolve_value = 1;
         private bool DissolveFlg = false;
         private const int maxHP = 3;
-        private int HP = maxHP;
+        [SerializeField] private int HP = maxHP;
         //private TextElement HP_text;
+        [SerializeField] GameObject Target;
+
+        // Hit audio
+        [SerializeField] AudioClip hitAudio;
+
 
         // moving speed
         [SerializeField] private float Speed = 4;
+        [SerializeField] private float AttackDistance = 4;
+
+        bool AttackProgrammed = false;
+        bool AttackDone = false;
+        bool CanAttack => !PlayerStatus.ContainsValue(true);
+        public bool FreezeY = false; // freeze Y axis movement
 
         void Start()
         {
@@ -36,19 +48,45 @@ namespace Sample
             //HP_text.text = "HP " + HP.ToString();
         }
 
+        void AIUpdate()
+        {
+            // AI logic for moving towards the target
+            if (Target != null)
+            {
+                Vector3 toTarget = Target.transform.position - transform.position;
+
+                // Too far, move towards the target
+                if (Vector3.Magnitude(toTarget) >= AttackDistance)
+                {
+                    // Move to the target
+                    if (FreezeY)
+                        toTarget.y = 0; // Keep the movement on the horizontal plane
+
+                    Vector3 direction = toTarget.normalized;
+                    MoveDirection = direction * Speed;
+                    MOVE_Velocity(MoveDirection, Quaternion.LookRotation(direction).eulerAngles);
+                }
+                else // Too close, attack
+                {
+                    // Stop moving
+                    MoveDirection = Vector3.zero;
+                    //MOVE_Velocity(MoveDirection, Vector3.zero);
+
+                    if (CanAttack && !AttackProgrammed) // Close enough and can attack
+                    {
+                        Anim.CrossFade(AttackState, 0.1f, 0, 0); // Start attack animation
+                        AttackProgrammed = true;                 // Prevent attacking again
+                    }
+                }
+            }
+        }
+
         void Update()
         {
+            AIUpdate();
             STATUS();
-            GRAVITY();
-            Respawn();
-            // this character status
-            if (!PlayerStatus.ContainsValue(true))
-            {
-                MOVE();
-                PlayerAttack();
-                Damage();
-            }
-            else if (PlayerStatus.ContainsValue(true))
+            
+            if (PlayerStatus.ContainsValue(true))
             {
                 int status_name = 0;
                 foreach (var i in PlayerStatus)
@@ -65,7 +103,7 @@ namespace Sample
                 }
                 else if (status_name == Attack)
                 {
-                    PlayerAttack();
+                    //PlayerAttack();
                 }
                 else if (status_name == Surprised)
                 {
@@ -83,6 +121,12 @@ namespace Sample
             {
                 DissolveFlg = false;
             }
+
+            // We attack once, and kill ourselves after the animation is done
+            if (Anim.GetCurrentAnimatorStateInfo(0).tagHash == AttackTag)
+                AttackDone = true;
+            else if (AttackDone)    // Attack done and not in attack state, we kill ourselves
+                HP = 0;
         }
 
         //---------------------------------------------------------------------
@@ -138,76 +182,12 @@ namespace Sample
             }
             if (Dissolve_value <= 0)
             {
+                Destroy(gameObject);
                 Ctrl.enabled = false;
             }
         }
-        // play a animation of Attack
-        private void PlayerAttack()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Anim.CrossFade(AttackState, 0.1f, 0, 0);
-            }
-        }
-        //---------------------------------------------------------------------
-        // gravity for fall of this character
-        //---------------------------------------------------------------------
-        private void GRAVITY()
-        {
-            if (Ctrl.enabled)
-            {
-                if (CheckGrounded())
-                {
-                    if (MoveDirection.y < -0.1f)
-                    {
-                        MoveDirection.y = -0.1f;
-                    }
-                }
-                MoveDirection.y -= 0.1f;
-                Ctrl.Move(MoveDirection * Time.deltaTime);
-            }
-        }
-        //---------------------------------------------------------------------
-        // whether it is grounded
-        //---------------------------------------------------------------------
-        private bool CheckGrounded()
-        {
-            if (Ctrl.isGrounded && Ctrl.enabled)
-            {
-                return true;
-            }
-            Ray ray = new Ray(this.transform.position + Vector3.up * 0.1f, Vector3.down);
-            float range = 0.2f;
-            return Physics.Raycast(ray, range);
-        }
-        //---------------------------------------------------------------------
-        // for slime moving
-        //---------------------------------------------------------------------
-        private void MOVE()
-        {
-            // velocity
-            if (Anim.GetCurrentAnimatorStateInfo(0).fullPathHash == MoveState)
-            {
-                if (Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    MOVE_Velocity(new Vector3(0, 0, -Speed), new Vector3(0, 180, 0));
-                }
-                else if (Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    MOVE_Velocity(new Vector3(0, 0, Speed), new Vector3(0, 0, 0));
-                }
-                else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    MOVE_Velocity(new Vector3(Speed, 0, 0), new Vector3(0, 90, 0));
-                }
-                else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
-                {
-                    MOVE_Velocity(new Vector3(-Speed, 0, 0), new Vector3(0, 270, 0));
-                }
-            }
-            KEY_DOWN();
-            KEY_UP();
-        }
+
+        
         //---------------------------------------------------------------------
         // value for moving
         //---------------------------------------------------------------------
@@ -222,75 +202,18 @@ namespace Sample
             MoveDirection.z = 0;
             this.transform.rotation = Quaternion.Euler(rot);
         }
-        //---------------------------------------------------------------------
-        // whether arrow key is key down
-        //---------------------------------------------------------------------
-        private void KEY_DOWN()
-        {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Anim.CrossFade(MoveState, 0.1f, 0, 0);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Anim.CrossFade(MoveState, 0.1f, 0, 0);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                Anim.CrossFade(MoveState, 0.1f, 0, 0);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                Anim.CrossFade(MoveState, 0.1f, 0, 0);
-            }
-        }
-        //---------------------------------------------------------------------
-        // whether arrow key is key up
-        //---------------------------------------------------------------------
-        private void KEY_UP()
-        {
-            if (Input.GetKeyUp(KeyCode.UpArrow))
-            {
-                if (!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    Anim.CrossFade(IdleState, 0.1f, 0, 0);
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.DownArrow))
-            {
-                if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    Anim.CrossFade(IdleState, 0.1f, 0, 0);
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.LeftArrow))
-            {
-                if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow))
-                {
-                    Anim.CrossFade(IdleState, 0.1f, 0, 0);
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.RightArrow))
-            {
-                if (!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow))
-                {
-                    Anim.CrossFade(IdleState, 0.1f, 0, 0);
-                }
-            }
-        }
+       
         //---------------------------------------------------------------------
         // damage
         //---------------------------------------------------------------------
-        private void Damage()
+        public void Damage()
         {
-            // Damaged by outside field.
-            if (Input.GetKeyUp(KeyCode.S))
-            {
-                Anim.CrossFade(SurprisedState, 0.1f, 0, 0);
-                HP--;
-                //HP_text.text = "HP " + HP.ToString();
-            }
+            Anim.CrossFade(SurprisedState, 0.1f, 0, 0);
+            HP--;
+            // Play audio
+            AudioSource.PlayClipAtPoint(hitAudio, transform.position);
         }
+
         //---------------------------------------------------------------------
         // respawn
         //---------------------------------------------------------------------
