@@ -25,7 +25,9 @@ namespace Sample
         private const int maxHP = 3;
         [SerializeField] private int HP = maxHP;
         //private TextElement HP_text;
-        [SerializeField] GameObject Target;
+
+        [SerializeField] string TargetTag;
+        private GameObject Target => GameObject.FindGameObjectWithTag(TargetTag); // Find the target by tag
 
         // Hit audio
         [SerializeField] AudioClip hitAudio;
@@ -39,6 +41,7 @@ namespace Sample
         bool AttackDone = false;
         bool CanAttack => !PlayerStatus.ContainsValue(true);
         public bool FreezeY = false; // freeze Y axis movement
+        bool CanMove => !PlayerStatus[Surprised];
 
         void Start()
         {
@@ -51,7 +54,7 @@ namespace Sample
         void AIUpdate()
         {
             // AI logic for moving towards the target
-            if (Target != null)
+            if (Target != null && CanMove)
             {
                 Vector3 toTarget = Target.transform.position - transform.position;
 
@@ -110,6 +113,7 @@ namespace Sample
                     // nothing method
                 }
             }
+
             // Dissolve
             if (HP <= 0 && !DissolveFlg)
             {
@@ -169,6 +173,9 @@ namespace Sample
             }
             else if (Anim.GetCurrentAnimatorStateInfo(0).fullPathHash != SurprisedState)
             {
+                if (PlayerStatus[Surprised])
+                    HP--; // We lose HP after the surprise animation finishes
+
                 PlayerStatus[Surprised] = false;
             }
         }
@@ -209,7 +216,7 @@ namespace Sample
         public void Damage()
         {
             Anim.CrossFade(SurprisedState, 0.1f, 0, 0);
-            HP--;
+            //HP--; We will lose the HP after the surprise animation finishes
             // Play audio
             AudioSource.PlayClipAtPoint(hitAudio, transform.position);
         }
