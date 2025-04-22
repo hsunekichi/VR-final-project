@@ -21,9 +21,9 @@ public class Bow : MonoBehaviour
         if (arrow)
         {
             currentArrow = arrow.gameObject;
-            grabInteractable = arrow;
-            grabInteractable.trackPosition = false;
-            grabInteractable.trackRotation = false;
+            arrowGrabbed = arrow;
+            arrowGrabbed.trackPosition = false;
+            arrowGrabbed.trackRotation = false;
             currentArrow.transform.SetParent(stringAttachPoint);
             currentArrow.transform.localPosition = Vector3.zero;
             currentArrow.transform.localRotation = Quaternion.identity;
@@ -32,7 +32,7 @@ public class Bow : MonoBehaviour
 
     private void Update()
     {
-        if (currentArrow && grabInteractable && !grabInteractable.isSelected)
+        if (currentArrow && arrowGrabbed && !arrowGrabbed.isSelected)
         {
             FireArrow();
         }
