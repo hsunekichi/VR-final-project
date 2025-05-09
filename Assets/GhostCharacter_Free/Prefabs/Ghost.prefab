@@ -143,7 +143,7 @@ MonoBehaviour:
   TargetTag: MainCamera
   hitAudio: {fileID: 8300000, guid: 68e352c436badf3498d13cab3911416b, type: 3}
   Speed: 1
-  AttackDistance: 1.5
+  AttackDistance: 0.75
   FreezeY: 0
 --- !u!114 &1246709758997403712
 MonoBehaviour:

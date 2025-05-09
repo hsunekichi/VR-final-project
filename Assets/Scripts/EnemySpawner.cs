@@ -2,46 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class EnemySpawn : MonoBehaviour
 {
-    // Properties that can be changed from the Inspetor tab
-    public GameObject EnemyPrefab; // Item to be spawned
-    Vector3 center => transform.position; // Center of the cube to spawn
-    public Vector3 SpawnSize; // Size of the cube to spawn
+    public GameObject EnemyPrefab;
+    Vector3 center => transform.position;
+    public Vector3 SpawnSize;
     public float SpawnRate;
     public int MaxEnemies;
+    public int TotalEnemiesLimit;
 
-    void Awake()
-    {
-        //SpawnItem();
-    }
+    private int totalEnemiesSpawned = 0;
 
-    // Update is called once per frame
+    // Nueva referencia y distancia mínima
+    public Transform ReferenceObject;
+    public float MinDistanceToReference = 5f;
+
     void Update()
     {
         if (CanSpawn)
             SpawnItem();
     }
+
     public void SpawnItem()
     {
-        // Create new gameObject
-        GameObject item = Instantiate(EnemyPrefab, center + new Vector3(Random.Range(-SpawnSize.x / 2, SpawnSize.x / 2), Random.Range(-SpawnSize.y / 2, SpawnSize.y / 2), Random.Range(-SpawnSize.z / 2, SpawnSize.z / 2)), Quaternion.identity);
+        if (totalEnemiesSpawned >= TotalEnemiesLimit)
+            return;
+
+        // Verifica que ReferenceObject esté dentro de SpawnSize
+        if (ReferenceObject != null)
+        {
+            Vector3 localPos = ReferenceObject.position - center;
+            Vector3 halfSize = SpawnSize / 2f;
+            if (Mathf.Abs(localPos.x) > halfSize.x ||
+                Mathf.Abs(localPos.y) > halfSize.y ||
+                Mathf.Abs(localPos.z) > halfSize.z)
+            {
+                // ReferenceObject está fuera del área de SpawnSize
+                return;
+            }
+        }
+
+        Vector3 spawnPos;
+        int attempts = 0;
+        const int maxAttempts = 20;
+
+        var spawnSizeBorder = SpawnSize - new Vector3(0.5f, 0.7f, 0.5f);
+
+        do
+        {
+            spawnPos = center + new Vector3(
+                Random.Range(-spawnSizeBorder.x / 2, spawnSizeBorder.x / 2),
+                Random.Range(-spawnSizeBorder.y / 2, spawnSizeBorder.y / 2),
+                Random.Range(-spawnSizeBorder.z / 2, spawnSizeBorder.z / 2)
+            );
+            attempts++;
+        }
+        while (ReferenceObject != null && Vector3.Distance(spawnPos, ReferenceObject.position) < MinDistanceToReference && attempts < maxAttempts);
+
+        if (ReferenceObject != null && Vector3.Distance(spawnPos, ReferenceObject.position) < MinDistanceToReference)
+            return; // No se encontró una posición válida
+
+        GameObject item = Instantiate(EnemyPrefab, spawnPos, Quaternion.identity);
+        item.transform.localScale = Vector3.one * 0.25f;
+        
         lastSpawnTime = Time.time;
+        totalEnemiesSpawned++;
     }
 
-    // Debug funcion. In the Scene tab you can see a Red Box, which is the
-    // volume where the object is going to be spawned.
     void OnDrawGizmosSelected()
     {
-        // Draw one gizmos for the spawn volume and another for the camera range
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         Gizmos.DrawCube(center, SpawnSize);
         Gizmos.color = new Color(0, 1, 0, 0.5f);
     }
 
     float lastSpawnTime;
-    bool CanSpawn => CooldownIsOver && CurrentEnemies < MaxEnemies;
-    bool CooldownIsOver => Time.time - lastSpawnTime > 1.0f/SpawnRate;
+    bool CanSpawn => CooldownIsOver && CurrentEnemies < MaxEnemies && totalEnemiesSpawned < TotalEnemiesLimit;
+    bool CooldownIsOver => Time.time - lastSpawnTime > 1.0f / SpawnRate;
     int CurrentEnemies => GameObject.FindGameObjectsWithTag("Enemy").Length;
 }

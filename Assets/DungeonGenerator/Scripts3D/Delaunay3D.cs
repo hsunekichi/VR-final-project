@@ -261,6 +261,10 @@ public class Delaunay3D {
     }
 
     void Triangulate() {
+        if (Vertices == null || Vertices.Count < 4) {
+            throw new InvalidOperationException("At least 4 vertices are required for 3D Delaunay triangulation.");
+        }
+
         float minX = Vertices[0].Position.x;
         float minY = Vertices[0].Position.y;
         float minZ = Vertices[0].Position.z;
@@ -269,24 +273,28 @@ public class Delaunay3D {
         float maxZ = minZ;
 
         foreach (var vertex in Vertices) {
-            if (vertex.Position.x < minX) minX = vertex.Position.x;
-            if (vertex.Position.x > maxX) maxX = vertex.Position.x;
-            if (vertex.Position.y < minY) minY = vertex.Position.y;
-            if (vertex.Position.y > maxY) maxY = vertex.Position.y;
-            if (vertex.Position.z < minZ) minZ = vertex.Position.z;
-            if (vertex.Position.z > maxZ) maxZ = vertex.Position.z;
+            Vector3 pos = vertex.Position;
+            if (pos.x < minX) minX = pos.x;
+            if (pos.x > maxX) maxX = pos.x;
+            if (pos.y < minY) minY = pos.y;
+            if (pos.y > maxY) maxY = pos.y;
+            if (pos.z < minZ) minZ = pos.z;
+            if (pos.z > maxZ) maxZ = pos.z;
         }
 
         float dx = maxX - minX;
         float dy = maxY - minY;
         float dz = maxZ - minZ;
-        float deltaMax = Mathf.Max(dx, dy, dz) * 2;
+        float deltaMax = Mathf.Max(dx, dy, dz) * 10f; // Increased for more robust super tetrahedron
 
-        Vertex p1 = new Vertex(new Vector3(minX - 1         , minY - 1          , minZ - 1          ));
-        Vertex p2 = new Vertex(new Vector3(maxX + deltaMax  , minY - 1          , minZ - 1          ));
-        Vertex p3 = new Vertex(new Vector3(minX - 1         , maxY + deltaMax   , minZ - 1          ));
-        Vertex p4 = new Vertex(new Vector3(minX - 1         , minY - 1          , maxZ + deltaMax   ));
+        Vector3 center = new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, (minZ + maxZ) * 0.5f);
 
+        Vertex p1 = new Vertex(center + new Vector3(-1, -1, -1) * deltaMax);
+        Vertex p2 = new Vertex(center + new Vector3(+1, -1, +1) * deltaMax);
+        Vertex p3 = new Vertex(center + new Vector3(-1, +1, +1) * deltaMax);
+        Vertex p4 = new Vertex(center + new Vector3(+1, +1, -1) * deltaMax);
+
+        Tetrahedra.Clear();
         Tetrahedra.Add(new Tetrahedron(p1, p2, p3, p4));
 
         foreach (var vertex in Vertices) {
@@ -302,6 +310,7 @@ public class Delaunay3D {
                 }
             }
 
+            // Mark duplicate triangles as bad
             for (int i = 0; i < triangles.Count; i++) {
                 for (int j = i + 1; j < triangles.Count; j++) {
                     if (Triangle.AlmostEqual(triangles[i], triangles[j])) {
@@ -311,70 +320,52 @@ public class Delaunay3D {
                 }
             }
 
-            Tetrahedra.RemoveAll((Tetrahedron t) => t.IsBad);
-            triangles.RemoveAll((Triangle t) => t.IsBad);
+            Tetrahedra.RemoveAll(t => t.IsBad);
+            triangles.RemoveAll(t => t.IsBad);
 
             foreach (var triangle in triangles) {
                 Tetrahedra.Add(new Tetrahedron(triangle.U, triangle.V, triangle.W, vertex));
             }
         }
 
-        Tetrahedra.RemoveAll((Tetrahedron t) => t.ContainsVertex(p1) || t.ContainsVertex(p2) || t.ContainsVertex(p3) || t.ContainsVertex(p4));
+        // Remove tetrahedra that share a vertex with the super tetrahedron
+        Tetrahedra.RemoveAll(t =>
+            t.ContainsVertex(p1) || t.ContainsVertex(p2) || t.ContainsVertex(p3) || t.ContainsVertex(p4)
+        );
+
+        Triangles.Clear();
+        Edges.Clear();
 
         HashSet<Triangle> triangleSet = new HashSet<Triangle>();
         HashSet<Edge> edgeSet = new HashSet<Edge>();
 
         foreach (var t in Tetrahedra) {
-            var abc = new Triangle(t.A, t.B, t.C);
-            var abd = new Triangle(t.A, t.B, t.D);
-            var acd = new Triangle(t.A, t.C, t.D);
-            var bcd = new Triangle(t.B, t.C, t.D);
+            Triangle[] faces = {
+                new Triangle(t.A, t.B, t.C),
+                new Triangle(t.A, t.B, t.D),
+                new Triangle(t.A, t.C, t.D),
+                new Triangle(t.B, t.C, t.D)
+            };
 
-            if (triangleSet.Add(abc)) {
-                Triangles.Add(abc);
+            foreach (var tri in faces) {
+                if (triangleSet.Add(tri)) {
+                    Triangles.Add(tri);
+                }
             }
 
-            if (triangleSet.Add(abd)) {
-                Triangles.Add(abd);
-            }
+            Edge[] edges = {
+                new Edge(t.A, t.B),
+                new Edge(t.B, t.C),
+                new Edge(t.C, t.A),
+                new Edge(t.D, t.A),
+                new Edge(t.D, t.B),
+                new Edge(t.D, t.C)
+            };
 
-            if (triangleSet.Add(acd)) {
-                Triangles.Add(acd);
-            }
-
-            if (triangleSet.Add(bcd)) {
-                Triangles.Add(bcd);
-            }
-
-            var ab = new Edge(t.A, t.B);
-            var bc = new Edge(t.B, t.C);
-            var ca = new Edge(t.C, t.A);
-            var da = new Edge(t.D, t.A);
-            var db = new Edge(t.D, t.B);
-            var dc = new Edge(t.D, t.C);
-
-            if (edgeSet.Add(ab)) {
-                Edges.Add(ab);
-            }
-
-            if (edgeSet.Add(bc)) {
-                Edges.Add(bc);
-            }
-
-            if (edgeSet.Add(ca)) {
-                Edges.Add(ca);
-            }
-
-            if (edgeSet.Add(da)) {
-                Edges.Add(da);
-            }
-
-            if (edgeSet.Add(db)) {
-                Edges.Add(db);
-            }
-
-            if (edgeSet.Add(dc)) {
-                Edges.Add(dc);
+            foreach (var edge in edges) {
+                if (edgeSet.Add(edge)) {
+                    Edges.Add(edge);
+                }
             }
         }
     }

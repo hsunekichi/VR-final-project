@@ -63,7 +63,7 @@ namespace VirtualGrasp.Scripts
         public KeyCode m_registerSceneKey = KeyCode.S;
         [Tooltip("The scene name to test scene loading. ActiveScene if left empty.")]
         public string m_sceneName = "";
-        
+
         public void Start()
         {
             if (m_sceneName == "")
@@ -158,7 +158,7 @@ namespace VirtualGrasp.Scripts
                 {
                     bool vrButtonIsPressed = false;
                     if (inputDevice.TryGetFeatureValue(CommonUsages.primaryButton, out vrButtonIsPressed))
-                    {         
+                    {
                         // Register the one marked with "1" as KeyCode with X
                         if (rig.m_registerPrefabKey == KeyCode.Alpha1 &&
                             vrButtonIsPressed && !m_vrButtonWasPressed)
@@ -181,7 +181,7 @@ namespace VirtualGrasp.Scripts
                 VG_Controller.GetSensorControlledAvatarID(out int avatarID);
                 VG_Controller.UnRegisterAvatar(avatarID);
             }
-            
+
             if (Input.GetKeyDown(m_registerSceneKey))
             {
                 SceneManager.LoadScene(m_sceneName, LoadSceneMode.Additive);

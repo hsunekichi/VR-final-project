@@ -2,7 +2,7 @@ Shader "Gleechi/Unlit"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        //_MainTex ("Texture", 2D) = "white" {} // Eliminado porque no se usará la textura
     }
     SubShader
     {
@@ -14,8 +14,6 @@ Shader "Gleechi/Unlit"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            
 
             #include "UnityCG.cginc"
 
@@ -33,8 +31,6 @@ Shader "Gleechi/Unlit"
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            sampler2D _MainTex;
-
             v2f vert (appdata v)
             {
                 v2f o;
@@ -47,13 +43,13 @@ Shader "Gleechi/Unlit"
                 o.uv = v.uv;
                 
                 return o;
-                
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
-                return tex2D(_MainTex, i.uv);      
+                // Gris oscuro (por ejemplo, RGB 0.2, 0.2, 0.2)
+                return fixed4(0.01, 0.01, 0.01, 1.0);
             }
             ENDCG
         }
