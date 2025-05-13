@@ -29,19 +29,41 @@ namespace Sample
         [SerializeField] string TargetTag;
         private GameObject Target => GameObject.FindGameObjectWithTag(TargetTag); // Find the target by tag
 
-        // Hit audio
-        [SerializeField] AudioClip hitAudio;
+        static private float lastAudioPitch = 1.0f; // last audio pitch for the hit audio
 
+        // Hit audio
+        [System.Serializable]
+        public class AudioSettings
+        {
+            public AudioClip hitAudio;
+            public float maxPitchDelta;
+            public float minPitch;
+            public float maxPitch;
+        }
+        [SerializeField] AudioSettings audioSettings;
 
         // moving speed
-        [SerializeField] private float Speed = 4;
-        [SerializeField] private float AttackDistance = 4;
+        [System.Serializable]
+        public class MoveSettings
+        {
+            public float SpeedToTarget = 4;
+            public float AttackDistance = 4;
+            public bool FreezeY = false; // freeze Y axis movement
+
+            public bool lateralMoveX;
+            public bool lateralMoveY;
+            [ShowIf("moveSettings.lateralMoveX")] public AnimationCurve lateralSpeedX;
+            [ShowIf("moveSettings.lateralMoveY")] public AnimationCurve lateralSpeedY;
+
+            public float moveNoiseStrength = 0.1f; // Noise strength for movement
+        }
+        [SerializeField] private MoveSettings moveSettings;
 
         bool AttackProgrammed = false;
         bool AttackDone = false;
         bool CanAttack => !PlayerStatus.ContainsValue(true);
-        public bool FreezeY = false; // freeze Y axis movement
         bool CanMove => !PlayerStatus[Surprised];
+        float born_time = 0.0f; // time when the object was born
 
         void Start()
         {
@@ -49,6 +71,8 @@ namespace Sample
             Ctrl = this.GetComponent<CharacterController>();
             //HP_text = GameObject.Find("Canvas/HP").GetComponent<TextElement>();
             //HP_text.text = "HP " + HP.ToString();
+
+            born_time = Time.time; // record the time when the object was born
         }
 
         void AIUpdate()
@@ -59,15 +83,25 @@ namespace Sample
                 Vector3 toTarget = Target.transform.position - transform.position;
 
                 // Too far, move towards the target
-                if (Vector3.Magnitude(toTarget) >= AttackDistance)
+                if (Vector3.Magnitude(toTarget) >= moveSettings.AttackDistance)
                 {
                     // Move to the target
-                    if (FreezeY)
-                        toTarget.y = 0; // Keep the movement on the horizontal plane
+                    float curveLengthX = moveSettings.lateralSpeedX.keys[moveSettings.lateralSpeedX.length - 1].time;
+                    float curveLengthY = moveSettings.lateralSpeedY.keys[moveSettings.lateralSpeedY.length - 1].time;
+                    float timeInCurveX = (Time.time - born_time) % curveLengthX;
+                    float timeInCurveY = (Time.time - born_time) % curveLengthY;
 
-                    Vector3 direction = toTarget.normalized;
-                    MoveDirection = direction * Speed;
-                    MOVE_Velocity(MoveDirection, Quaternion.LookRotation(direction).eulerAngles);
+                    Vector3 lateralMove = moveSettings.lateralSpeedX.Evaluate(timeInCurveX) * Vector3.right * (moveSettings.lateralMoveX ? 1:0) +
+                                          moveSettings.lateralSpeedY.Evaluate(timeInCurveY) * Vector3.up    * (moveSettings.lateralMoveY ? 1:0);
+
+                    Vector3 moveNoise = Random.insideUnitSphere * moveSettings.moveNoiseStrength;
+                    Vector3 toTargetDir = toTarget.normalized;
+                    MoveDirection = toTargetDir * moveSettings.SpeedToTarget + lateralMove + moveNoise;
+
+                    if (moveSettings.FreezeY)
+                        MoveDirection.y = 0; // Keep the movement on the horizontal plane
+
+                    MOVE_Velocity(MoveDirection, Quaternion.LookRotation(toTargetDir).eulerAngles);
                 }
                 else // Too close, attack
                 {
@@ -218,7 +252,17 @@ namespace Sample
             Anim.CrossFade(SurprisedState, 0.1f, 0, 0);
             //HP--; We will lose the HP after the surprise animation finishes
             // Play audio
-            AudioSource.PlayClipAtPoint(hitAudio, transform.position);
+
+            float deltaSign = Mathf.Sign(Random.Range(lastAudioPitch <= 1.0f ? -1.0f:-1.5f, lastAudioPitch >= 1.0f ? 1.5f : 2f));
+            float newPitch = lastAudioPitch + deltaSign * Random.Range(0, audioSettings.maxPitchDelta);
+            newPitch = Mathf.Clamp(newPitch, audioSettings.minPitch, audioSettings.maxPitch);
+
+            AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+            audioSource.clip = audioSettings.hitAudio;
+            audioSource.pitch = newPitch;
+            lastAudioPitch = audioSource.pitch;
+            audioSource.Play();
+            Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
         }
 
         //---------------------------------------------------------------------

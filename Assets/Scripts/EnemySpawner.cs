@@ -8,7 +8,7 @@ public class EnemySpawn : MonoBehaviour
     Vector3 center => transform.position;
     public Vector3 SpawnSize;
     public float SpawnRate;
-    public int MaxEnemies;
+    public int MaxAliveEnemies;
     public int TotalEnemiesLimit;
 
     private int totalEnemiesSpawned = 0;
@@ -63,7 +63,7 @@ public class EnemySpawn : MonoBehaviour
             return; // No se encontró una posición válida
 
         GameObject item = Instantiate(EnemyPrefab, spawnPos, Quaternion.identity);
-        item.transform.localScale = Vector3.one * 0.25f;
+        //item.transform.localScale = Vector3.one * 0.25f;
         
         lastSpawnTime = Time.time;
         totalEnemiesSpawned++;
@@ -77,7 +77,7 @@ public class EnemySpawn : MonoBehaviour
     }
 
     float lastSpawnTime;
-    bool CanSpawn => CooldownIsOver && CurrentEnemies < MaxEnemies && totalEnemiesSpawned < TotalEnemiesLimit;
+    bool CanSpawn => CooldownIsOver && CurrentEnemies < MaxAliveEnemies && totalEnemiesSpawned < TotalEnemiesLimit;
     bool CooldownIsOver => Time.time - lastSpawnTime > 1.0f / SpawnRate;
     int CurrentEnemies => GameObject.FindGameObjectsWithTag("Enemy").Length;
 }

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MaterialGhost
+  m_Name: GhostDiffuse
   m_Shader: {fileID: -6465566751694194690, guid: 2ac1888d8b54ce946b653439c7a6615d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
