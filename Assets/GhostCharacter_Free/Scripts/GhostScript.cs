@@ -36,6 +36,7 @@ namespace Sample
         public class AudioSettings
         {
             public AudioClip hitAudio;
+            public AudioClip spawnAudio;
             public float maxPitchDelta;
             public float minPitch;
             public float maxPitch;
@@ -73,6 +74,12 @@ namespace Sample
             //HP_text.text = "HP " + HP.ToString();
 
             born_time = Time.time; // record the time when the object was born
+
+            // Play spawn audio
+            AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+            audioSource.clip = audioSettings.spawnAudio;
+            audioSource.pitch = Random.Range(0.85f, 1.15f);
+            audioSource.Play();
         }
 
         void AIUpdate()

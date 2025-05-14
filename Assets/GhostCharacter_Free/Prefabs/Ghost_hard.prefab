@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 46f311046d2104da8b56be3d0a49a119, type: 3}
       propertyPath: m_Name
-      value: Ghost
+      value: Ghost_hard
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 46f311046d2104da8b56be3d0a49a119, type: 3}
       propertyPath: m_TagString
@@ -143,9 +143,10 @@ MonoBehaviour:
   TargetTag: MainCamera
   audioSettings:
     hitAudio: {fileID: 8300000, guid: 68e352c436badf3498d13cab3911416b, type: 3}
+    spawnAudio: {fileID: 8300000, guid: e2ca74878fa0cdf45861b2e7182ceaf5, type: 3}
     maxPitchDelta: 0.1
-    minPitch: 0.7
-    maxPitch: 2
+    minPitch: 0.6
+    maxPitch: 1
   moveSettings:
     SpeedToTarget: 4
     AttackDistance: 4
