@@ -10,6 +10,7 @@ public class Damageable : MonoBehaviour
     public UnityEvent Damaged;
 
     float InvencibilityStartTime = 0;
+    public float HP = 100.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +25,14 @@ public class Damageable : MonoBehaviour
         
     }
 
-    public void Damage()
+    public void Damage(float damage=0.0f)
     {
         float currentTime = Time.time;
 
         if (currentTime > InvencibilityStartTime + InvencibilityTime)
         {
+            // Apply damage
+            HP -= damage;
             Damaged.Invoke();
             InvencibilityStartTime = currentTime;
         }

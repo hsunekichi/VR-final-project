@@ -23,6 +23,7 @@ namespace Sample
         private float Dissolve_value = 1;
         private bool DissolveFlg = false;
         private const int maxHP = 3;
+        [SerializeField] private float damage = 1.0f; // How much damage we deal on attacks
         [SerializeField] private int HP = maxHP;
         //private TextElement HP_text;
 
@@ -77,6 +78,8 @@ namespace Sample
 
             // Play spawn audio
             AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+            audioSource.transform.position = transform.position; // Set audio position to object position
+            audioSource.spatialBlend = 1.0f; // Make audio 3D
             audioSource.clip = audioSettings.spawnAudio;
             audioSource.pitch = Random.Range(0.85f, 1.15f);
             audioSource.Play();
@@ -118,6 +121,12 @@ namespace Sample
 
                     if (CanAttack && !AttackProgrammed) // Close enough and can attack
                     {
+                        // Perform the attack
+                        if (Target.GetComponent<Damageable>() != null)
+                        {
+                            Target.GetComponent<Damageable>().Damage(damage);
+                        }
+
                         Anim.CrossFade(AttackState, 0.1f, 0, 0); // Start attack animation
                         AttackProgrammed = true;                 // Prevent attacking again
                     }
@@ -267,6 +276,8 @@ namespace Sample
             AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
             audioSource.clip = audioSettings.hitAudio;
             audioSource.pitch = newPitch;
+            audioSource.transform.position = transform.position; // Set audio position to object position
+            audioSource.spatialBlend = 1.0f; // Make audio 3D
             lastAudioPitch = audioSource.pitch;
             audioSource.Play();
             Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
