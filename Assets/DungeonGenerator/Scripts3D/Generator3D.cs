@@ -549,7 +549,7 @@ public class Generator3D : MonoBehaviour
                 );
 
                 // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-                collider.transform.localScale = new Vector3(1f, 0.1f, 1f);
+                collider.transform.localScale = new Vector3(1.05f, 0.1f, 1.05f);
             }
         }
     }
@@ -613,7 +613,7 @@ public class Generator3D : MonoBehaviour
                 );
 
                 // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-                collider.transform.localScale = new Vector3(1f, 0.1f, 1f);
+                collider.transform.localScale = new Vector3(1.05f, 0.1f, 1.05f);
             }
         }
     }
@@ -699,7 +699,7 @@ public class Generator3D : MonoBehaviour
             );
 
             // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-            collider.transform.localScale = new Vector3(1f, 1f, tileWidth);
+            collider.transform.localScale = new Vector3(1.05f, 1.05f, tileWidth);
         }
     }
 
@@ -1024,7 +1024,7 @@ public class Generator3D : MonoBehaviour
         );
 
         // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-        collider.transform.localScale = new Vector3(0.31f, 1f, 0.2f);
+        collider.transform.localScale = new Vector3(0.3f, 1f, 0.2f);
         collider.transform.localPosition = new Vector3(-0.31f * zDir, 0.5f, -0.31f * xDir);
 
         // Instanciamos la pieza con la misma rotación que la pared
@@ -1036,7 +1036,7 @@ public class Generator3D : MonoBehaviour
         );
 
         // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-        collider2.transform.localScale = new Vector3(0.31f, 1f, 0.2f);
+        collider2.transform.localScale = new Vector3(0.3f, 1f, 0.2f);
         collider2.transform.localPosition = new Vector3(0.31f * zDir, 0.5f, 0.31f * xDir);
     }
 
