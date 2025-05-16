@@ -18,29 +18,37 @@ public class StickingArrowToSurface : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        rb.isKinematic = true;
-        myCollider.isTrigger = true;
-
-        GameObject arrow = Instantiate(stickingArrow);
-        arrow.transform.position = transform.position;
-        arrow.transform.forward = transform.forward;
-        if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
-        arrow.transform.GetChild(0).localPosition = transform.GetChild(0).localPosition;
-        arrow.transform.GetChild(0).localRotation = transform.GetChild(0).localRotation;
-
-        if (collision.collider.attachedRigidbody != null)
+        if (collision.gameObject.tag != "Enemy")
         {
-            arrow.transform.parent = collision.collider.attachedRigidbody.transform;
-        }
+            rb.isKinematic = true;
+            myCollider.isTrigger = true;
 
-        collision.collider.GetComponent<IHittable>()?.GetHit();
+            GameObject arrow = Instantiate(stickingArrow);
+            arrow.transform.position = transform.position;
+            arrow.transform.forward = transform.forward;
+            if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
+            arrow.transform.GetChild(0).localPosition = transform.GetChild(0).localPosition;
+            arrow.transform.GetChild(0).localRotation = transform.GetChild(0).localRotation;
 
-        if (collision.gameObject.tag == "Objective")
-        {
-            arrow.GetComponent<PlaySound>().play(true);
+            if (collision.collider.attachedRigidbody != null)
+            {
+                arrow.transform.parent = collision.collider.attachedRigidbody.transform;
+            }
+
+            collision.collider.GetComponent<IHittable>()?.GetHit();
+
+            if (collision.gameObject.tag == "Objective")
+            {
+                arrow.GetComponent<PlaySound>().play(true);
+            }
+            else
+            {
+                arrow.GetComponent<PlaySound>().play(false);
+            }
         } else
         {
-            arrow.GetComponent<PlaySound>().play(false);
+            collision.gameObject.GetComponent<Damageable>().Damage(1.0f);
+            global.arrowCount++;
         }
 
         Destroy(gameObject);
