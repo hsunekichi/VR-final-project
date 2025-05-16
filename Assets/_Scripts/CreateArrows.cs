@@ -29,6 +29,7 @@ public class CreateArrows : XRGrabInteractable
         {
             // Crear la nueva instancia
             GameObject newObject = Instantiate(objectToSpawn, transform.position + Vector3.up * 0.5f, Quaternion.Euler(0, 0, 0));
+            if (!global.training) newObject.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
 
             XRGrabInteractable newGrabInteractable = newObject.GetComponent<XRGrabInteractable>();
 

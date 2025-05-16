@@ -39,6 +39,7 @@ public class ArrowController : MonoBehaviour
             GameObject arrow = Instantiate(arrowPrefab);
             arrow.transform.position = arrowSpawnPoint.transform.position;
             arrow.transform.rotation = midPointVisual.transform.rotation;
+            if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
             Rigidbody rb = arrow.GetComponent<Rigidbody>();
             rb.AddForce(midPointVisual.transform.forward * strength * arrowMaxSpeed, ForceMode.Impulse);
             global.arrowCount--;

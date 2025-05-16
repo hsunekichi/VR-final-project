@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GlobalVars;
 
 public class StickingArrowToSurface : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class StickingArrowToSurface : MonoBehaviour
         GameObject arrow = Instantiate(stickingArrow);
         arrow.transform.position = transform.position;
         arrow.transform.forward = transform.forward;
+        if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
         arrow.transform.GetChild(0).localPosition = transform.GetChild(0).localPosition;
         arrow.transform.GetChild(0).localRotation = transform.GetChild(0).localRotation;
 

@@ -42,6 +42,7 @@ public class ArrowGrabbed : XRGrabInteractable
             GameObject arrow = Instantiate(arrowPrefab);
             arrow.transform.position = transform.position;
             arrow.transform.forward = transform.forward;
+            if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
             arrow.transform.GetChild(0).localPosition = transform.GetChild(0).localPosition;
             arrow.transform.GetChild(0).localRotation = transform.GetChild(0).localRotation;
             //arrow.transform.Rotate(90.0f, -90.0f, 0.0f);
