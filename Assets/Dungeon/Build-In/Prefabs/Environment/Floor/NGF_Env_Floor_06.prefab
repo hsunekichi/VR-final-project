@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3923183080163688963}
   - component: {fileID: 1266924850176997065}
   - component: {fileID: 456148691762850379}
+  - component: {fileID: 3579700257009932699}
   m_Layer: 0
   m_Name: NGF_Env_Floor_06
   m_TagString: Untagged
@@ -105,3 +106,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 0.051052976, z: 4.001173}
   m_Center: {x: 0, y: 0.025526164, z: 0.0005865097}
+--- !u!114 &3579700257009932699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762789492003542812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 20

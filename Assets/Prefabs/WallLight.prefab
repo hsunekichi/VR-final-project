@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 5556905017176750366}
   - component: {fileID: 3916826476860988473}
   - component: {fileID: 989145783455814009}
+  - component: {fileID: 1512115200024085372}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -151,6 +152,19 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!114 &1512115200024085372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2273978563445292896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc164b001cb01b42a5a5c96faa4a679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 10
 --- !u!1001 &3489343546660986016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -312,8 +326,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4748541046156294731, guid: c61eab5b7846b35459a9f7f589f1de1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8253065569064190658}
   m_SourcePrefab: {fileID: 100100000, guid: c61eab5b7846b35459a9f7f589f1de1e, type: 3}
+--- !u!1 &2680681050026698223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4748541046156294731, guid: c61eab5b7846b35459a9f7f589f1de1e, type: 3}
+  m_PrefabInstance: {fileID: 7265860747320074148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8253065569064190658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680681050026698223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 5
 --- !u!4 &3348533640564195157 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5381208096178807025, guid: c61eab5b7846b35459a9f7f589f1de1e, type: 3}

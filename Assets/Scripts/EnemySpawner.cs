@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public GameObject EnemyPrefab;
+    [SerializeField]
+    GameObject[] EnemyPrefabs;
+
+    public float EnemyScale = 1.0f;
     Vector3 center => transform.position;
     public Vector3 SpawnSize;
     public float SpawnRate;
@@ -62,9 +65,23 @@ public class EnemySpawn : MonoBehaviour
         if (ReferenceObject != null && Vector3.Distance(spawnPos, ReferenceObject.position) < MinDistanceToReference)
             return; // No se encontró una posición válida
 
-        GameObject item = Instantiate(EnemyPrefab, spawnPos, Quaternion.identity);
-        //item.transform.localScale = Vector3.one * 0.25f;
-        
+
+        GameObject prefabToUse = null;
+        if (EnemyPrefabs != null && EnemyPrefabs.Length > 0)
+        {
+            var idx = Random.Range(0, EnemyPrefabs.Length);
+            prefabToUse = EnemyPrefabs[idx];
+        }
+
+        GameObject item = Instantiate(prefabToUse, spawnPos, Quaternion.identity);
+        item.transform.localScale = Vector3.one * EnemyScale;
+        var ghostScript = item.GetComponent<Sample.GhostScript>();
+        if (ghostScript != null && ghostScript.moveSettings != null)
+        {
+            ghostScript.moveSettings.AttackDistance *= EnemyScale;
+            ghostScript.moveSettings.SpeedToTarget *= EnemyScale;
+        }
+
         lastSpawnTime = Time.time;
         totalEnemiesSpawned++;
     }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3782357088358150235}
   - component: {fileID: 1412255557742773393}
   - component: {fileID: 313214936727083027}
+  - component: {fileID: 8647005990786192416}
   m_Layer: 0
   m_Name: NGF_Env_Stairs_01
   m_TagString: Untagged
@@ -106,3 +107,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8356725449900732807, guid: d0e49cb11ded67f48916846e6ff3aae9, type: 3}
+--- !u!114 &8647005990786192416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619713902115808580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 20

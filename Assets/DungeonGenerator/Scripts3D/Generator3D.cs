@@ -31,6 +31,8 @@ public class Generator3D : MonoBehaviour
 
     // DUNGEON CONFIGURATION
     [SerializeField]
+    int seed;
+    [SerializeField]
     Vector3Int size;
     [SerializeField]
     int roomCount;
@@ -83,10 +85,11 @@ public class Generator3D : MonoBehaviour
 
     void Start()
     {
-        random = new Random(0);
+        random = new Random(seed);
         grid = new Grid3D<CellType>(size, Vector3Int.zero);
         rooms = new List<Room>();
 
+        PlaceInitialStructure();
         PlaceRooms();
         Triangulate();
         CreateHallways();
@@ -127,10 +130,38 @@ public class Generator3D : MonoBehaviour
         }
     }
 
+    void PlaceInitialStructure()
+    {
+        // Crea una habitación de 2x2x2 que empieza en (0,0,0)
+        Vector3Int location = new Vector3Int(0, 0, 0);
+        Vector3Int roomSize = new Vector3Int(2, 1, 2);
+
+        Room initialRoom = new Room(location, roomSize);
+        rooms.Add(initialRoom);
+
+        // Marca las celdas del grid como Room
+        Vector3 min = initialRoom.bounds.min;
+        Vector3 max = initialRoom.bounds.max;
+        for (int x = Mathf.FloorToInt(min.x); x < Mathf.CeilToInt(max.x); x++)
+        {
+            for (int y = Mathf.FloorToInt(min.y); y < Mathf.CeilToInt(max.y); y++)
+            {
+                for (int z = Mathf.FloorToInt(min.z); z < Mathf.CeilToInt(max.z); z++)
+                {
+                    Vector3Int pos = new Vector3Int(x, y, z);
+                    grid[pos] = CellType.Room;
+                }
+            }
+        }
+    }
+
     void PlaceRooms()
     {
-        while (rooms.Count < roomCount)
+        int maxAttempts = 1000;
+        int attempt = 0;
+        while (rooms.Count < roomCount && attempt < maxAttempts)
         {
+            attempt++;
             Vector3Int location = new Vector3Int(
                 random.Next(0, size.x),
                 random.Next(0, size.y),
@@ -166,6 +197,10 @@ public class Generator3D : MonoBehaviour
             if (add)
             {
                 rooms.Add(newRoom);
+                if (rooms.Count < roomCount)
+                    attempt = 0;
+                else
+                    attempt = maxAttempts;
                 // PlaceRoom(newRoom.bounds.position, newRoom.bounds.size);
 
                 // Iterate through all integer positions within the bounds
@@ -203,7 +238,6 @@ public class Generator3D : MonoBehaviour
                 var sizeProp = enemySpawnType.GetField("SpawnSize");
                 if (sizeProp != null)
                 {
-                    Debug.Log("Setting SpawnSize property!");
                     sizeProp.SetValue(enemySpawn, room.bounds.size);
                 }
                 var refObjProp = enemySpawnType.GetField("ReferenceObject");

@@ -45,9 +45,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 19588385245968726, guid: 8ee08d04ad5df46fbb2e97260b63420b, type: 3}
+  EnemyPrefabs:
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: c54414fe15b2df744b49bac3e42d7b17, type: 3}
+  - {fileID: 19588385245968726, guid: 8ee08d04ad5df46fbb2e97260b63420b, type: 3}
+  EnemyScale: 0.25
   SpawnSize: {x: 0.27, y: 0.5, z: 0.48}
   SpawnRate: 1
-  MaxEnemies: 5
+  MaxAliveEnemies: 4
   TotalEnemiesLimit: 15
   ReferenceObject: {fileID: 0}
   MinDistanceToReference: 3

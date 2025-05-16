@@ -23,7 +23,6 @@ namespace Sample
         private float Dissolve_value = 1;
         private bool DissolveFlg = false;
         private const int maxHP = 3;
-        [SerializeField] private float damage = 1.0f; // How much damage we deal on attacks
         [SerializeField] private int HP = maxHP;
         //private TextElement HP_text;
 
@@ -54,12 +53,12 @@ namespace Sample
 
             public bool lateralMoveX;
             public bool lateralMoveY;
-            [ShowIf("moveSettings.lateralMoveX")] public AnimationCurve lateralSpeedX;
-            [ShowIf("moveSettings.lateralMoveY")] public AnimationCurve lateralSpeedY;
+            public AnimationCurve lateralSpeedX;
+            public AnimationCurve lateralSpeedY;
 
             public float moveNoiseStrength = 0.1f; // Noise strength for movement
         }
-        [SerializeField] private MoveSettings moveSettings;
+        [SerializeField] public MoveSettings moveSettings;
 
         bool AttackProgrammed = false;
         bool AttackDone = false;
@@ -78,8 +77,6 @@ namespace Sample
 
             // Play spawn audio
             AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
-            audioSource.transform.position = transform.position; // Set audio position to object position
-            audioSource.spatialBlend = 1.0f; // Make audio 3D
             audioSource.clip = audioSettings.spawnAudio;
             audioSource.pitch = Random.Range(0.85f, 1.15f);
             audioSource.Play();
@@ -101,8 +98,8 @@ namespace Sample
                     float timeInCurveX = (Time.time - born_time) % curveLengthX;
                     float timeInCurveY = (Time.time - born_time) % curveLengthY;
 
-                    Vector3 lateralMove = moveSettings.lateralSpeedX.Evaluate(timeInCurveX) * Vector3.right * (moveSettings.lateralMoveX ? 1:0) +
-                                          moveSettings.lateralSpeedY.Evaluate(timeInCurveY) * Vector3.up    * (moveSettings.lateralMoveY ? 1:0);
+                    Vector3 lateralMove = moveSettings.lateralSpeedX.Evaluate(timeInCurveX) * Vector3.right * (moveSettings.lateralMoveX ? 1 : 0) +
+                                          moveSettings.lateralSpeedY.Evaluate(timeInCurveY) * Vector3.up * (moveSettings.lateralMoveY ? 1 : 0);
 
                     Vector3 moveNoise = Random.insideUnitSphere * moveSettings.moveNoiseStrength;
                     Vector3 toTargetDir = toTarget.normalized;
@@ -121,12 +118,6 @@ namespace Sample
 
                     if (CanAttack && !AttackProgrammed) // Close enough and can attack
                     {
-                        // Perform the attack
-                        if (Target.GetComponent<Damageable>() != null)
-                        {
-                            Target.GetComponent<Damageable>().Damage(damage);
-                        }
-
                         Anim.CrossFade(AttackState, 0.1f, 0, 0); // Start attack animation
                         AttackProgrammed = true;                 // Prevent attacking again
                     }
@@ -138,7 +129,7 @@ namespace Sample
         {
             AIUpdate();
             STATUS();
-            
+
             if (PlayerStatus.ContainsValue(true))
             {
                 int status_name = 0;
@@ -244,7 +235,7 @@ namespace Sample
             }
         }
 
-        
+
         //---------------------------------------------------------------------
         // value for moving
         //---------------------------------------------------------------------
@@ -259,7 +250,7 @@ namespace Sample
             MoveDirection.z = 0;
             this.transform.rotation = Quaternion.Euler(rot);
         }
-       
+
         //---------------------------------------------------------------------
         // damage
         //---------------------------------------------------------------------
@@ -269,15 +260,13 @@ namespace Sample
             //HP--; We will lose the HP after the surprise animation finishes
             // Play audio
 
-            float deltaSign = Mathf.Sign(Random.Range(lastAudioPitch <= 1.0f ? -1.0f:-1.5f, lastAudioPitch >= 1.0f ? 1.5f : 2f));
+            float deltaSign = Mathf.Sign(Random.Range(lastAudioPitch <= 1.0f ? -1.0f : -1.5f, lastAudioPitch >= 1.0f ? 1.5f : 2f));
             float newPitch = lastAudioPitch + deltaSign * Random.Range(0, audioSettings.maxPitchDelta);
             newPitch = Mathf.Clamp(newPitch, audioSettings.minPitch, audioSettings.maxPitch);
 
             AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
             audioSource.clip = audioSettings.hitAudio;
             audioSource.pitch = newPitch;
-            audioSource.transform.position = transform.position; // Set audio position to object position
-            audioSource.spatialBlend = 1.0f; // Make audio 3D
             lastAudioPitch = audioSource.pitch;
             audioSource.Play();
             Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
