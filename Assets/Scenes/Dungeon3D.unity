@@ -330,11 +330,6 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  moveSpeed: 0.5
-  additionalHeight: 0.05
-  minHeight: 0.05
-  maxHeight: 0.5
-  gravity: -9.81
 --- !u!143 &729160994
 CharacterController:
   m_ObjectHideFlags: 0

@@ -54,7 +54,6 @@ public class StickingArrowToSurface : MonoBehaviour
             }
         } else
         {
-            Debug.Log("Hitting ghost");
             collision.gameObject.GetComponent<Damageable>().Damage(1.0f);
             global.arrowCount++;
             arrowUI.SetArrowCount();

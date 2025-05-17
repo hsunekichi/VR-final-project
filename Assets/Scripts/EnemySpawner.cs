@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GlobalVars;
 
 public class EnemySpawn : MonoBehaviour
 {
@@ -19,17 +20,40 @@ public class EnemySpawn : MonoBehaviour
     // Nueva referencia y distancia mínima
     public Transform ReferenceObject;
     public float MinDistanceToReference = 5f;
+    private bool completedRoom = false;
+    private UIController arrowUI;
+
+    void Start()
+    {
+        arrowUI = GameObject.Find("Canvas").GetComponent<UIController>();
+    }
 
     void Update()
     {
         if (CanSpawn)
+        {
             SpawnItem();
+        }
+        else
+        {
+            if (!completedRoom && totalEnemiesSpawned >= TotalEnemiesLimit && CurrentEnemies == 0)
+            {
+                global.arrowCount += 20;
+                if (global.arrowCount > 99) global.arrowCount = 99;
+                arrowUI.SetArrowCount();
+
+                completedRoom = true;
+            }
+        }
     }
 
     public void SpawnItem()
     {
+        //Debug.Log(CurrentEnemies.ToString() + " " + totalEnemiesSpawned.ToString() + " " + TotalEnemiesLimit.ToString());
         if (totalEnemiesSpawned >= TotalEnemiesLimit)
+        {
             return;
+        }
 
         // Verifica que ReferenceObject esté dentro de SpawnSize
         if (ReferenceObject != null)
