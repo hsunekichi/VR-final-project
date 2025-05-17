@@ -123,6 +123,14 @@ namespace Sample
                     {
                         Anim.CrossFade(AttackState, 0.1f, 0, 0); // Start attack animation
                         AttackProgrammed = true;                 // Prevent attacking again
+
+                        float newPitch = Random.Range(0.7f, 1.0f);
+
+                        AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+                        audioSource.clip = audioSettings.hitAudio;
+                        audioSource.pitch = newPitch;
+                        audioSource.Play();
+                        Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
                     }
                 }
             }
