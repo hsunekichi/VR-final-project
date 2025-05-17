@@ -101,13 +101,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0.8
+  m_Height: 1.2
   m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.4, z: -0.1}
+  m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!95 &2069234913439815857
 Animator:
   serializedVersion: 5
@@ -260,6 +260,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     moveNoiseStrength: 0.1
+  normalMaterial: {fileID: 2100000, guid: bb820b1fa3b2dcc459b91f113d5a00be, type: 2}
+  dyingMaterial: {fileID: 2100000, guid: b7aefbfb03e565342b797db22a652531, type: 2}
 --- !u!114 &1246709758997403712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,7 +290,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  HP: 100
+  HP: 1
 --- !u!137 &839705036205447455 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 514471462265150744, guid: 46f311046d2104da8b56be3d0a49a119, type: 3}

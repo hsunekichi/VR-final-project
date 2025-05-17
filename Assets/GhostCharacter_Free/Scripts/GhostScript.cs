@@ -66,6 +66,9 @@ namespace Sample
         bool CanMove => !PlayerStatus[Surprised];
         float born_time = 0.0f; // time when the object was born
 
+        [SerializeField]
+        public Material dyingMaterial;
+
         void Start()
         {
             Anim = this.GetComponent<Animator>();
@@ -193,6 +196,10 @@ namespace Sample
             if (DissolveFlg && HP <= 0)
             {
                 PlayerStatus[Dissolve] = true;
+                for (int i = 0; i < MeshR.Length; i++)
+                {
+                    MeshR[i].material = dyingMaterial;
+                }
             }
             else if (!DissolveFlg)
             {

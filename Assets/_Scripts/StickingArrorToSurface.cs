@@ -16,6 +16,13 @@ public class StickingArrowToSurface : MonoBehaviour
     [SerializeField]
     public AudioSource hit, miss;
 
+    public UIController arrowUI;
+
+    void Start()
+    {
+        arrowUI = GameObject.Find("Canvas").GetComponent<UIController>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag != "Enemy")
@@ -47,8 +54,10 @@ public class StickingArrowToSurface : MonoBehaviour
             }
         } else
         {
+            Debug.Log("Hitting ghost");
             collision.gameObject.GetComponent<Damageable>().Damage(1.0f);
             global.arrowCount++;
+            arrowUI.SetArrowCount();
         }
 
         Destroy(gameObject);
