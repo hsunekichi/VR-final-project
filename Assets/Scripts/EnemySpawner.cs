@@ -15,7 +15,7 @@ public class EnemySpawn : MonoBehaviour
     public int MaxAliveEnemies;
     public int TotalEnemiesLimit;
 
-    private int totalEnemiesSpawned = 0;
+    public int totalEnemiesSpawned = 0;
 
     // Nueva referencia y distancia mínima
     public Transform ReferenceObject;

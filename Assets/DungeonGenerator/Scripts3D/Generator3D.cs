@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 using Graphs;
-
+using UnityEngine.SceneManagement;
 public class Generator3D : MonoBehaviour
 {
     enum CellType
@@ -41,6 +41,8 @@ public class Generator3D : MonoBehaviour
     [SerializeField]
     Vector3Int roomMinSize;
     public Transform PlayerRef;
+    [SerializeField]
+    bool dungeonCompleted = false;
 
 
     // SOLID PREFABS
@@ -64,16 +66,6 @@ public class Generator3D : MonoBehaviour
     GameObject colliderPrefab;
     [SerializeField]
     GameObject spawnerPrefab;
-    [SerializeField]
-    GameObject cubePrefab;
-
-    //MATERIALS
-    [SerializeField]
-    Material redMaterial;
-    [SerializeField]
-    Material blueMaterial;
-    [SerializeField]
-    Material greenMaterial;
 
     Random random;
     Grid3D<CellType> grid;
@@ -101,6 +93,40 @@ public class Generator3D : MonoBehaviour
     void Update()
     {
         checkLocation();
+        checkwin();
+    }
+
+    void checkwin()
+    {
+        // Check if all the spawnerPrefabs game object have spawned all the enemies (totalEnemiesSpawned == TotalEnemiesLimit) of the script EnemySpawner.cs of the prefab
+        // If so, show a message in the console
+        var spawners = GameObject.FindGameObjectsWithTag("Spawner");
+        bool allSpawnersDone = true;
+        bool noEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length == 0;
+        if (!noEnemies || dungeonCompleted || spawners.Length == 0)
+        {
+            return;
+        }
+        foreach (var spawner in spawners)
+        {
+            var enemySpawn = spawner.GetComponent<EnemySpawn>();
+            if (enemySpawn != null)
+            {
+                var enemySpawnType = enemySpawn.GetType();
+                var totalEnemiesSpawned = enemySpawn.totalEnemiesSpawned;//(int)enemySpawnType.GetField("totalEnemiesSpawned").GetValue(enemySpawn);
+                var totalEnemiesLimit = enemySpawn.TotalEnemiesLimit;
+                if (totalEnemiesSpawned < totalEnemiesLimit)
+                {
+                    allSpawnersDone = false;
+                    break;
+                }
+            }
+        }
+        if (allSpawnersDone && !dungeonCompleted)
+        {
+            dungeonCompleted = true;
+            SceneManager.LoadScene("Win", LoadSceneMode.Single);
+        }
     }
 
     void checkLocation()
@@ -214,6 +240,8 @@ public class Generator3D : MonoBehaviour
         // Place objects/spawners etc
         foreach (var room in rooms)
         {
+            if (room.bounds.size.x < roomMinSize.x || room.bounds.size.z < roomMinSize.z)
+                continue;
             // Place spawners
             GameObject tile = Instantiate(
             spawnerPrefab,
@@ -472,12 +500,6 @@ public class Generator3D : MonoBehaviour
         return globalPath;
     }
 
-    void PlaceCube(Vector3Int location, Vector3 size, Material material)
-    {
-        GameObject go = Instantiate(cubePrefab, location, Quaternion.identity);
-        go.GetComponent<Transform>().localScale = size;
-        go.GetComponent<MeshRenderer>().material = material;
-    }
     void PlaceFloor(Vector3 location, Vector3 size)
     {
         // Tamaño de cada baldosa en XZ
@@ -696,8 +718,6 @@ public class Generator3D : MonoBehaviour
 
     void PlaceRoom(Vector3Int location, Vector3Int size)
     {
-        // PlaceCube(location, size, redMaterial);
-
         // Place floor
         Vector3 floorSize = new Vector3(size.x / 4f, 1, size.z / 4f);
         Vector3 floorLocation = location + new Vector3(size.x / 2f, 0, size.z / 2f);
@@ -766,9 +786,6 @@ public class Generator3D : MonoBehaviour
     }
     void PlaceHallway(Vector3Int location)
     {
-        // PlaceRoom(location, new Vector3Int(1, 1, 1));
-        // PlaceCube(location, new Vector3Int(1, 1, 1), blueMaterial);
-
         bool isInPath(Vector3Int _loc, Vector3Int _location)
         {
             bool isPath = false;
@@ -1072,10 +1089,6 @@ public class Generator3D : MonoBehaviour
                     else if (grid[pos] == CellType.Hallway)
                     {
                         PlaceHallway(pos);
-                    }
-                    else if (grid[pos] == CellType.None)
-                    {
-                        // PlaceCube(pos, new Vector3Int(1, 1, 1), redMaterial);
                     }
                 }
             }
