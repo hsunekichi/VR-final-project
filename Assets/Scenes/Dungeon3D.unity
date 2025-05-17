@@ -160,7 +160,32 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 68943875}
+        m_TargetAssemblyTypeName: Die, Assembly-CSharp
+        m_MethodName: change
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   HP: 100
+--- !u!114 &68943875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68943864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc34d1a5d62dbd74cbcde676e9a8e0db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowUI: {fileID: 0}
 --- !u!1001 &475947248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,9 +302,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 507000792146810041, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1789777761}
-    - targetCorrespondingSourceObject: {fileID: 1660864464627733286, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1980564157}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8906318681788999720, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       insertIndex: -1
@@ -292,13 +314,11 @@ PrefabInstance:
       addedObject: {fileID: 729160993}
     - targetCorrespondingSourceObject: {fileID: 4814594773179587427, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 68943875}
+    - targetCorrespondingSourceObject: {fileID: 4814594773179587427, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 68943870}
   m_SourcePrefab: {fileID: 100100000, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
---- !u!4 &475947249 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1660864464627733286, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
-  m_PrefabInstance: {fileID: 475947248}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &475947250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 507000792146810041, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
@@ -482,6 +502,7 @@ MonoBehaviour:
   roomMaxSize: {x: 12, y: 1, z: 12}
   roomMinSize: {x: 4, y: 1, z: 4}
   PlayerRef: {fileID: 1633058098}
+  dungeonCompleted: 0
   floorPrefabs:
   - {fileID: 5312053832577182489, guid: 31874e14b5857c74d9e092a6d28bb85c, type: 3}
   - {fileID: 6533161494905976092, guid: d198dc6fea309724db0c9888bf2bbbb6, type: 3}
@@ -535,10 +556,6 @@ MonoBehaviour:
   - {fileID: 1837368600014542569, guid: a5d02b60e90929642b349ea921ac97e1, type: 3}
   colliderPrefab: {fileID: 257573968949913750, guid: c4b774f2eb275194a9bed803a44d32af, type: 3}
   spawnerPrefab: {fileID: 1149793085141486672, guid: d74adf1f0febb5042b2b65138833f677, type: 3}
-  cubePrefab: {fileID: 7415050535990569633, guid: 3fb4ddafbd160274ba8f07a1cf8cd5ee, type: 3}
-  redMaterial: {fileID: 2100000, guid: a3d12a88582cc624086444b08556dad4, type: 2}
-  blueMaterial: {fileID: 2100000, guid: 7a24ec3e292474c449db1f54da642633, type: 2}
-  greenMaterial: {fileID: 2100000, guid: b3d51b106f3d90246a074e0e3d8ae6d6, type: 2}
   path: []
 --- !u!4 &1180316802
 Transform:
@@ -584,7 +601,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -4744487077176742475, guid: a5d75af66f721fe45b0ec0ce38aba05b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 3bd6ef8c259d33d448094d3dea1f0541, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0
+  m_Volume: 0.769
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -766,6 +783,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 475947250}
     m_Modifications:
+    - target: {fileID: 2011084634622182013, guid: dcb226fe3eef05c489b927912a2a93a0, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.002
+      objectReference: {fileID: 0}
     - target: {fileID: 5871386094543190559, guid: dcb226fe3eef05c489b927912a2a93a0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -828,7 +849,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5871386094543190559, guid: dcb226fe3eef05c489b927912a2a93a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1980564157}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcb226fe3eef05c489b927912a2a93a0, type: 3}
 --- !u!4 &1789777761 stripped
@@ -912,13 +936,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980564156}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.3333328, y: 3.3333337, z: 3.333334}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.143, y: -0, z: 0.05}
+  m_LocalScale: {x: 3.3333328, y: 3.3333335, z: 3.3333337}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 475947249}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1789777761}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &1980564158
 MonoBehaviour:
   m_ObjectHideFlags: 0

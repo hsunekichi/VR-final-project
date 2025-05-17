@@ -58,4 +58,9 @@ public class FullScreenShaderController : MonoBehaviour
 
         _fullScreenDamage.SetActive(false);
     }
+
+    void OnDestroy()
+    {
+        _fullScreenDamage.SetActive(false);
+    }
 }

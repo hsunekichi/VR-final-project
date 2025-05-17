@@ -60,5 +60,6 @@ MonoBehaviour:
   SpawnRate: 0.2
   MaxAliveEnemies: 4
   TotalEnemiesLimit: 15
+  totalEnemiesSpawned: 0
   ReferenceObject: {fileID: 0}
   MinDistanceToReference: 3

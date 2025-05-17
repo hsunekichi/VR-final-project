@@ -10,12 +10,16 @@ public class UIController : MonoBehaviour
     [SerializeField]
     public TextMeshProUGUI arrowText;
 
+    [SerializeField]
+    public TextMeshProUGUI heartText;
+
     private Vector3 originalScale;
 
     void Start()
     {
         originalScale = arrowText.transform.localScale;
         SetArrowCount();
+        SetHeartCount();
     }
 
     public void SetArrowCount()
@@ -33,6 +37,23 @@ public class UIController : MonoBehaviour
 
         arrowText.transform.localScale = originalScale;
         arrowText.color = Color.white;
+    }
+
+    public void SetHeartCount()
+    {
+        heartText.text = $"x {global.HP}";
+        StartCoroutine(AnimateHeart());
+    }
+
+    private IEnumerator AnimateHeart()
+    {
+        heartText.transform.localScale = originalScale * 1.3f;
+        heartText.color = Color.yellow;
+
+        yield return new WaitForSeconds(0.2f);
+
+        heartText.transform.localScale = originalScale;
+        heartText.color = Color.white;
     }
 }
 

@@ -127,10 +127,13 @@ namespace Sample
                         float newPitch = Random.Range(0.7f, 1.0f);
 
                         AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+                        audioSource.transform.position = transform.position; // Set audio position to object position
+                        audioSource.spatialBlend = 1.0f; // Make audio 3D
                         audioSource.clip = audioSettings.hitAudio;
                         audioSource.pitch = newPitch;
                         audioSource.Play();
                         Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
+                        Target.gameObject.GetComponent<Damageable>()?.Damage(1.0f);
                     }
                 }
             }
@@ -280,6 +283,8 @@ namespace Sample
             newPitch = Mathf.Clamp(newPitch, audioSettings.minPitch, audioSettings.maxPitch);
 
             AudioSource audioSource = new GameObject("TempAudio").AddComponent<AudioSource>();
+            audioSource.transform.position = transform.position; // Set audio position to object position
+            audioSource.spatialBlend = 1.0f; // Make audio 3D
             audioSource.clip = audioSettings.hitAudio;
             audioSource.pitch = newPitch;
             lastAudioPitch = audioSource.pitch;

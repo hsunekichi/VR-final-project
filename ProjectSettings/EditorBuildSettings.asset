@@ -5,18 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/HugoLab2.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/Samples/XR Interaction Toolkit/2.6.4/Starter Assets/DemoScene.unity
-    guid: 319dafa5c80f29f428dc1e0d03f04177
-  - enabled: 0
-    path: Assets/Scenes/BoatScene.unity
-    guid: 1f8b5dd7fa16cf54b9d6fa007fb0dfe7
+  - enabled: 1
+    path: Assets/_Scenes/ArcheryScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Dungeon3D.unity
     guid: 0e002ba7f10a755448fb638ffca09154
+  - enabled: 1
+    path: Assets/Scenes/Game_over.unity
+    guid: 2a0414feb35f6674c9314ed5b4279c36
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: c4f2f2d21692ff84e88f18562143ea6a
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 57d402caf53110a4bb4f8cee72f95393, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3c4c687295fafe14bbdab60952e5ec62, type: 2}
