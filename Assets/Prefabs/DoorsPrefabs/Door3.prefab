@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3433244483715178983}
   - component: {fileID: 594935722116994349}
   - component: {fileID: 2269874971743789450}
+  - component: {fileID: 3341482865049428985}
   m_Layer: 0
   m_Name: NGF_Env_Stone_doorway_06
   m_TagString: Untagged
@@ -106,6 +107,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2485281452739046213, guid: 43bfa79e9fa8fc940899efc973054f56, type: 3}
+--- !u!114 &3341482865049428985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387494146370368760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15
 --- !u!1 &1496920465660646220
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +300,7 @@ GameObject:
   - component: {fileID: 7812040480093997406}
   - component: {fileID: 5444014279754349972}
   - component: {fileID: 6650852951296408689}
+  - component: {fileID: 5925081940919993675}
   m_Layer: 0
   m_Name: NGF_Env_Stone_doorway_05
   m_TagString: Untagged
@@ -381,6 +396,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2485281452739046213, guid: 43bfa79e9fa8fc940899efc973054f56, type: 3}
+--- !u!114 &5925081940919993675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5804570737298037825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15
 --- !u!1 &7548107065341343838
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +418,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3662813967373388554}
-  - component: {fileID: 6330742494229510195}
   m_Layer: 0
   m_Name: Door3
   m_TagString: Untagged
@@ -415,19 +442,6 @@ Transform:
   - {fileID: 1732353410879368770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6330742494229510195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548107065341343838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 20
 --- !u!1 &7761717565925068760
 GameObject:
   m_ObjectHideFlags: 0

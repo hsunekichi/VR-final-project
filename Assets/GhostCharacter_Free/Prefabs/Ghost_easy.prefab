@@ -152,7 +152,7 @@ MonoBehaviour:
     minPitch: 1.5
     maxPitch: 2
   moveSettings:
-    SpeedToTarget: 4
+    SpeedToTarget: 1
     AttackDistance: 4
     FreezeY: 0
     lateralMoveX: 0
@@ -288,6 +288,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  HP: 100
 --- !u!137 &839705036205447455 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 514471462265150744, guid: 46f311046d2104da8b56be3d0a49a119, type: 3}

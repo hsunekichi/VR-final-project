@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8636429982605699061}
   - component: {fileID: 5782116173351883583}
   - component: {fileID: 5188043036534017977}
+  - component: {fileID: -692417283461874848}
   m_Layer: 0
   m_Name: NGF_Env_Column_01
   m_TagString: Untagged
@@ -101,7 +102,20 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.1955212, y: 3.99975, z: 1.205267}
   m_Center: {x: 0.0035707355, y: 1.999875, z: 0.0024448931}
+--- !u!114 &-692417283461874848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5421991412210184938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15

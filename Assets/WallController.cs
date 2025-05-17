@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
-    public float maxDistance = 20f;
+    public float maxDistance = 15f;
     private MeshRenderer meshRenderer;
     private Transform mainCamera;
 

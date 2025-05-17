@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 6894918237175421141}
   - component: {fileID: 8668123968846490655}
   - component: {fileID: 8037457981333729433}
+  - component: {fileID: -3251357914334213639}
   m_Layer: 0
   m_Name: NGF_Env_Wall_on_the_foundation_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 1
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &7494112986923734896
 Transform:
@@ -50,7 +51,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7154989053984329162}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -101,7 +102,20 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 4.0000176, y: 4.0000186, z: 0.43624982}
   m_Center: {x: 0.000008821487, y: 1.9999906, z: -0.21812509}
+--- !u!114 &-3251357914334213639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7154989053984329162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15

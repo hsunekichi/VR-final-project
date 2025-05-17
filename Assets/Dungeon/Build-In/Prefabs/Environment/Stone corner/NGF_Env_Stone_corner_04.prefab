@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4011743054886590019}
   - component: {fileID: 1173297947471192713}
   - component: {fileID: 543231198543330827}
+  - component: {fileID: 6908892156075459205}
   m_Layer: 0
   m_Name: NGF_Env_Stone_corner_04
   m_TagString: Untagged
@@ -101,7 +102,20 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.9500625, y: 0.9480463, z: 4.000018}
   m_Center: {x: -0.0048237294, y: 0.01067166, z: 1.9999967}
+--- !u!114 &6908892156075459205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813067083860968284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15

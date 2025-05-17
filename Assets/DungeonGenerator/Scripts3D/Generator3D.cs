@@ -118,15 +118,6 @@ public class Generator3D : MonoBehaviour
                     break;
                 }
             }
-
-            // if (insideRoom)
-            // {
-            //     Debug.Log("Player is inside a room.");
-            // }
-            // else
-            // {
-            //     Debug.Log("Player is NOT inside any room.");
-            // }
         }
     }
 
@@ -291,7 +282,7 @@ public class Generator3D : MonoBehaviour
             var endRoom = (edge.V as Vertex<Room>).Item;
             Vector3 start = startRoom.bounds.center + new Vector3(0.5f, 0.5f, 0.5f);
             Vector3 end = endRoom.bounds.center + new Vector3(0.5f, 0.5f, 0.5f);
-            Debug.DrawLine(start, end, Color.yellow, 10000, false);
+            // Debug.DrawLine(start, end, Color.yellow, 10000, false);
         }
     }
 
@@ -464,7 +455,7 @@ public class Generator3D : MonoBehaviour
                             PlaceStairs(prev + offset, offset, rotation, xDir, zDir, delta);
                         }
 
-                        Debug.DrawLine(prev + new Vector3(0.5f, 0.5f, 0.5f), current + new Vector3(0.5f, 0.5f, 0.5f), grid[prev] == CellType.Room && grid[current] == CellType.Hallway ? Color.red : Color.blue, 10000, false);//grid[current] == CellType.Room ||
+                        // Debug.DrawLine(prev + new Vector3(0.5f, 0.5f, 0.5f), current + new Vector3(0.5f, 0.5f, 0.5f), grid[prev] == CellType.Room && grid[current] == CellType.Hallway ? Color.red : Color.blue, 10000, false);//grid[current] == CellType.Room ||
                         globalPath.Add(current);
                     }
                 }
@@ -940,7 +931,7 @@ public class Generator3D : MonoBehaviour
 
         var factor = delta.y < 0 ? -1 : 1;
         collider.transform.localPosition = new Vector3(factor * xDir / 2f, 0.5f, factor * zDir / 2f);
-        collider.transform.localScale = new Vector3(1f, 0.1f, 2.2360679775f);
+        collider.transform.localScale = new Vector3(1f, 0.11f, 2.2360679775f);
         collider.transform.localRotation *= Quaternion.Euler(-28f, 0, 0);
 
         var size = new Vector3(0.25f, 0.25f, 0.25f);
@@ -958,8 +949,8 @@ public class Generator3D : MonoBehaviour
         PlaceWall(location + new Vector3(-factor * xDir / 2f, 1f, -factor * zDir / 2f), size, rotation);
         PlaceWall(location + new Vector3(3 * factor * xDir / 2f, 0f, 3 * factor * zDir / 2f), size, rotation);
 
-        PlaceCorner(location + new Vector3(-factor * zDir / 2f - factor * xDir / 2f, 1f, factor * xDir / 2f - factor * zDir / 2f), Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z));
-        PlaceCorner(location + new Vector3(-factor * zDir / 2f + 3 * factor * xDir / 2f, 1f, factor * xDir / 2f + 3 * factor * zDir / 2f), Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z));
+        PlaceCorner(location + new Vector3(-factor * zDir / 2f - factor * xDir / 2f, 0.95f, factor * xDir / 2f - factor * zDir / 2f), Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z));
+        PlaceCorner(location + new Vector3(-factor * zDir / 2f + 3 * factor * xDir / 2f, 0.95f, factor * xDir / 2f + 3 * factor * zDir / 2f), Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z));
 
         PlaceCeiling(location + new Vector3(0f, 2f, 0f), size);
         PlaceCeiling(location + new Vector3(factor * xDir, 2f, factor * zDir), size);
@@ -1128,15 +1119,16 @@ public class Generator3D : MonoBehaviour
             foreach (var localCorner in localCorners)
             {
                 Vector3 worldCorner = wall.transform.TransformPoint(localCorner);
+                Vector3 roundedCorner = Vector3Int.RoundToInt(worldCorner);
 
                 // Comprobamos si hay otra pared cerca de esta esquina (en un radio pequeño)
                 bool hasNeighbor = false;
                 foreach (GameObject otherWall in allWalls)
                 {
                     if (otherWall == wall) continue;
-                    float dist = Vector3.Distance(worldCorner, otherWall.transform.position);
+                    float dist = Vector3.Distance(roundedCorner, Vector3Int.RoundToInt(otherWall.transform.position));
                     // Si la distancia es menor que la mitad de la escala de la pared y tiene la misma orientación, consideramos que hay una pared vecina
-                    if (dist < 0.4f && Mathf.Abs(Quaternion.Angle(wall.transform.rotation, otherWall.transform.rotation)) < 1f)
+                    if (dist < 0.2f && Mathf.Abs(Quaternion.Angle(wall.transform.rotation, otherWall.transform.rotation)) < 1f)
                     {
                         hasNeighbor = true;
                         break;
@@ -1144,11 +1136,30 @@ public class Generator3D : MonoBehaviour
                 }
                 if (!hasNeighbor)
                 {
-                    // Añadimos la posición de la esquina como posible pilar
-                    pillarPositions.Add(worldCorner);
+                    // Añadimos la posición de la esquina como posible pilar, redondeada para evitar duplicados
+                    pillarPositions.Add(roundedCorner);
                 }
             }
         }
+
+        var uniquePillarPositions = new HashSet<Vector3>();
+        foreach (var pos in pillarPositions)
+        {
+            bool isDuplicate = false;
+            foreach (var uniquePos in uniquePillarPositions)
+            {
+                if (Vector3.Distance(pos, uniquePos) < 0.1f)
+                {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate)
+            {
+                uniquePillarPositions.Add(pos);
+            }
+        }
+        pillarPositions = uniquePillarPositions;
 
         // Instanciamos un cubo en cada posición única de pilar
         foreach (var pos in pillarPositions)

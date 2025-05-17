@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6010947483653364426}
   - component: {fileID: 8399173355353091584}
   - component: {fileID: 7155742670011085446}
+  - component: {fileID: -2210942310217045441}
   m_Layer: 0
   m_Name: NGF_Env_Ceil_01
   m_TagString: Untagged
@@ -101,7 +102,20 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 4, y: 0.055458374, z: 4}
   m_Center: {x: 0, y: -0.037190367, z: 0}
+--- !u!114 &-2210942310217045441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038687678378577877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15

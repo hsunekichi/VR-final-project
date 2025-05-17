@@ -92,7 +92,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3089431673848301813}
-  - component: {fileID: 6779499856483026900}
   m_Layer: 0
   m_Name: Door1
   m_TagString: Untagged
@@ -117,19 +116,6 @@ Transform:
   - {fileID: 3862551866394885664}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6779499856483026900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2491525586397536729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 20
 --- !u!1 &2830539066986895340
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +404,7 @@ GameObject:
   - component: {fileID: 159123386318074245}
   - component: {fileID: 2725142496981206351}
   - component: {fileID: 3607439411825208469}
+  - component: {fileID: 3790691023890319277}
   m_Layer: 0
   m_Name: NGF_Env_Stone_doorway_04
   m_TagString: Untagged
@@ -513,6 +500,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2485281452739046213, guid: 43bfa79e9fa8fc940899efc973054f56, type: 3}
+--- !u!114 &3790691023890319277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4526498991362106522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0eb8cca2214da340b4228c5e4172a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 15
 --- !u!1 &7041419284112553712
 GameObject:
   m_ObjectHideFlags: 0
