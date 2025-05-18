@@ -272,15 +272,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3722726396862628082, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3722726396862628082, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       propertyPath: m_TurnSpeed
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3821992180318088292, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821992180318088292, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
+      propertyPath: m_Timeout
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3821992180318088292, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
       propertyPath: m_XROrigin
@@ -294,8 +298,7 @@ PrefabInstance:
       propertyPath: m_RequestedTrackingOriginMode
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3722726396862628082, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7932642113012786385, guid: 33a5ca75a4353d8409412b9f509439b1, type: 3}
     m_AddedGameObjects:
@@ -496,7 +499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2adc24e688e8841887873ee6b3e08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 244
+  seed: -1
   size: {x: 25, y: 4, z: 25}
   roomCount: 15
   roomMaxSize: {x: 12, y: 1, z: 12}

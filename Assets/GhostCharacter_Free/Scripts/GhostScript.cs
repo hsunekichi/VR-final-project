@@ -134,6 +134,7 @@ namespace Sample
                         audioSource.Play();
                         Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
                         Target.gameObject.GetComponent<Damageable>()?.Damage(1.0f);
+                        Ctrl.detectCollisions = false;
                     }
                 }
             }
@@ -290,6 +291,10 @@ namespace Sample
             lastAudioPitch = audioSource.pitch;
             audioSource.Play();
             Destroy(audioSource.gameObject, audioSettings.hitAudio.length / audioSource.pitch);
+            if (HP == 0)
+            {
+                Ctrl.detectCollisions = false;
+            }
         }
 
         //---------------------------------------------------------------------

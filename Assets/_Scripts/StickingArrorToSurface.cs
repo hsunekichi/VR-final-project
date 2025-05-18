@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GlobalVars;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class StickingArrowToSurface : MonoBehaviour
 {
@@ -18,9 +19,15 @@ public class StickingArrowToSurface : MonoBehaviour
 
     public UIController arrowUI;
 
+    private XRBaseController Lcontroller, Rcontroller;
+    [SerializeField] private float amplitude = 0.5f;      // Intensidad [0.0 - 1.0]
+    [SerializeField] private float duration = 0.5f;       // En segundos
+
     void Start()
     {
         arrowUI = GameObject.Find("Canvas").GetComponent<UIController>();
+        Lcontroller = GameObject.Find("Left Hand").GetComponent<XRBaseController>();
+        Rcontroller = GameObject.Find("Right Hand").GetComponent<XRBaseController>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -47,6 +54,8 @@ public class StickingArrowToSurface : MonoBehaviour
             if (collision.gameObject.tag == "Objective")
             {
                 arrow.GetComponent<PlaySound>().play(true);
+                Lcontroller.SendHapticImpulse(amplitude, duration);
+                Rcontroller.SendHapticImpulse(amplitude, duration);
             }
             else
             {
@@ -54,6 +63,8 @@ public class StickingArrowToSurface : MonoBehaviour
             }
         } else
         {
+            Lcontroller.SendHapticImpulse(amplitude, duration);
+            Rcontroller.SendHapticImpulse(amplitude, duration);
             collision.gameObject.GetComponent<Damageable>().Damage(1.0f);
             global.arrowCount++;
             arrowUI.SetArrowCount();

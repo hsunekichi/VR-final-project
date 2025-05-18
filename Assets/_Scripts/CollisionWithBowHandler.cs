@@ -41,6 +41,9 @@ public class CollisionWithBowHandler : MonoBehaviour
             this.gameObject.SetActive(false);
 
             Destroy(gameObject);
+        } else if (collision.gameObject.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<Damageable>().Damage(1.0f);
         }
     }
 

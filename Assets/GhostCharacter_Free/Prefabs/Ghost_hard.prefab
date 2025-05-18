@@ -149,7 +149,7 @@ MonoBehaviour:
     maxPitch: 1
   moveSettings:
     SpeedToTarget: 1
-    AttackDistance: 4
+    AttackDistance: 2
     FreezeY: 0
     lateralMoveX: 1
     lateralMoveY: 1
@@ -256,7 +256,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     moveNoiseStrength: 0.3
-  normalMaterial: {fileID: 2100000, guid: d11e6205c7cc9470aacd9fde3100bfe2, type: 2}
   dyingMaterial: {fileID: 2100000, guid: cde272450b68c134695ff88f18d2c9cc, type: 2}
 --- !u!114 &1246709758997403712
 MonoBehaviour:

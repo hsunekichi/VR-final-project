@@ -82,7 +82,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5062666544900997277
 Transform:
   m_ObjectHideFlags: 0
@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 8034459431438005274}
   - component: {fileID: 4743941230243183622}
   - component: {fileID: 8720533293002908429}
+  - component: {fileID: 2424706401570329314}
   - component: {fileID: 8265868136938674266}
   - component: {fileID: 8887124138289300413}
   m_Layer: 3
@@ -1057,10 +1058,34 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2424706401570329314}
+        m_TargetAssemblyTypeName: DeactivateArrows, Assembly-CSharp
+        m_MethodName: activateObject
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2424706401570329314}
+        m_TargetAssemblyTypeName: DeactivateArrows, Assembly-CSharp
+        m_MethodName: deactivateObject
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_FirstFocusEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -1159,6 +1184,19 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!114 &2424706401570329314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7227306302178879824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3378053c66afe224499c9788fcfaa357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grab: {fileID: 916984931790651805}
 --- !u!114 &8265868136938674266
 MonoBehaviour:
   m_ObjectHideFlags: 0
