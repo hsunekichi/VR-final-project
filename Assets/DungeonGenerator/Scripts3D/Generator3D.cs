@@ -77,6 +77,12 @@ public class Generator3D : MonoBehaviour
 
     void Start()
     {
+        if (seed == -1)
+        {
+            // Solo 1 millón de seeds posibles (0 a 999999)
+            int timeSeed = System.DateTime.Now.Hour * 3600 + System.DateTime.Now.Minute * 60 + System.DateTime.Now.Second;
+            seed = timeSeed % 1000000;
+        }
         random = new Random(seed);
         grid = new Grid3D<CellType>(size, Vector3Int.zero);
         rooms = new List<Room>();
@@ -700,7 +706,7 @@ public class Generator3D : MonoBehaviour
             );
 
             // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-            piece2.transform.localScale = new Vector3(tileWidth, size.y * 1.01f, size.z);
+            piece2.transform.localScale = new Vector3(tileWidth / 2.0f, size.y * 1.01f, size.z);
 
 
             // Instanciamos la pieza con la misma rotación que la pared
