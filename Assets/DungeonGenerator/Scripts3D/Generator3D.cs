@@ -706,7 +706,7 @@ public class Generator3D : MonoBehaviour
             );
 
             // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-            piece2.transform.localScale = new Vector3(tileWidth / 2.0f, size.y * 1.01f, size.z);
+            piece2.transform.localScale = new Vector3(tileWidth, size.y * 1.01f, size.z);
 
 
             // Instanciamos la pieza con la misma rotación que la pared
@@ -718,7 +718,7 @@ public class Generator3D : MonoBehaviour
             );
 
             // Escalamos: ancho=tileWidth, alto=size.y, grosor=size.z
-            collider.transform.localScale = new Vector3(1.05f, 1.05f, tileWidth);
+            collider.transform.localScale = new Vector3(1.05f, 1.05f, tileWidth / 2.0f);
         }
     }
 
