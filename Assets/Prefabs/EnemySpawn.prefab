@@ -59,7 +59,7 @@ MonoBehaviour:
   SpawnSize: {x: 0.27, y: 0.5, z: 0.48}
   SpawnRate: 0.2
   MaxAliveEnemies: 4
-  TotalEnemiesLimit: 15
+  TotalEnemiesLimit: 5
   totalEnemiesSpawned: 0
   ReferenceObject: {fileID: 0}
   MinDistanceToReference: 3

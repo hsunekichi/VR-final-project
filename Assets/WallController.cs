@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GlobalVars;
 
 public class WallController : MonoBehaviour
 {
-    public float maxDistance = 15f;
+    public float maxDistance = global.maxDistance;
     private MeshRenderer meshRenderer;
     private Transform mainCamera;
 

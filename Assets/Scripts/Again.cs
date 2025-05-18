@@ -20,7 +20,8 @@ public class Again : MonoBehaviour
     {
         audioSource.Play();
         global.arrowCount = 20;
-        global.training = false;
+        global.training = true;
+        global.HP = 10.0f;
         StartCoroutine(WaitAndLoadScene());
     }
 

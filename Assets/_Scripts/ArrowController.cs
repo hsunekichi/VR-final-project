@@ -41,7 +41,7 @@ public class ArrowController : MonoBehaviour
             arrow.transform.rotation = midPointVisual.transform.rotation;
             if (!global.training) arrow.transform.localScale = new Vector3(global.scale, global.scale, global.scale);
             Rigidbody rb = arrow.GetComponent<Rigidbody>();
-            rb.AddForce(midPointVisual.transform.forward * strength * arrowMaxSpeed, ForceMode.Impulse);
+            rb.AddForce(midPointVisual.transform.forward * strength * (global.training ? 1.0f: global.scale) * arrowMaxSpeed, ForceMode.Impulse);
             global.arrowCount--;
 
             arrowUI.SetArrowCount();

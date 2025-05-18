@@ -27,6 +27,7 @@ public class SingleUseGrabWithDelay : XRGrabInteractable
         interactionManager.UnregisterInteractable(this);
 
         global.arrowCount++;
+        if (global.arrowCount > 99) global.arrowCount = 99;
         arrowUI.SetArrowCount();
 
         StartCoroutine(DestroySafely());
